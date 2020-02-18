@@ -8,7 +8,7 @@ Image
 
 
 docker commands :
- 1. Creatinga and running a container from an image :
+ 1. Creating and running a container from an image :
  		
 		docker run image-name <alternate_command>
 
