@@ -18,7 +18,7 @@ docker commands :
  4. Creating a Container : (will give 1 unique id) : 
 	docker create <image-name>
  5. Starting a container: (-a is to watch the output and print on terminal) : 
-	docker start -a |container-id|
+	docker start -a {container-id}
  6. Deleting all the stopped containers and removing all the images from cache : 
 	docker system prune
  7. Checking logs of a container : 
@@ -26,11 +26,11 @@ docker commands :
  8. Stopping a container : 
 	docker kill {container-id} / docker stop {container-id}
  9. Execute an additional command in a container : 
-	docker exec -it <container-id> <command> 
+	docker exec -it {container-id} {command}
  10. Getting shell or terminal access in container : 
-	docker exec -it <container-id> sh
+	docker exec -it {container-id} sh
  11. Creating and running a container from an image : 
-	docker run  -it busybox sh
+	docker run  -it {imageName} sh
  
  
  
