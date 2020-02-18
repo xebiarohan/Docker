@@ -22,7 +22,7 @@ docker commands :
  6. Deleting all the stopped containers and removing all the images from cache : 
 	docker system prune
  7. Checking logs of a container : 
-	docker logs <container-id>
+	docker logs <<container-id>>
  8. Stopping a container : 
 	docker kill <container-id> / docker stop <container-id>
  9. Execute an additional command in a container : 
