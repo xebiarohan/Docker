@@ -25,9 +25,18 @@ docker commands :
 	docker logs {container-id}
  8. Stopping a container : 
 	docker kill {container-id} / docker stop {container-id}
+	
+	Difference between docker kill and docker stop :
+	In docker stop system sends SIGTERM signals, which may takes some time to stop the container,
+	while in case of kill command SIGKILL signal is sent, which kills the process immediately.
+	In case of stop command if it doesnot stop in 10 sec , it will automatically calls the docker 
+	kill command.
+	
  9. Execute an additional command in a container : 
+ 
 	docker exec -it {container-id} {command}
  10. Getting shell or terminal access in container : 
+ 
 	docker exec -it {container-id} sh
  11. Creating and running a container from an image : 
 	docker run  -it {imageName} sh
