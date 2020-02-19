@@ -54,6 +54,9 @@ docker commands :
 	docker run  -it {imageName} sh
  
  
+ it flag is equal to -i -t flag 
+ 	
+	-i is used so that the process can understand command which we enters in terminal throughh STDIN
  
 
 docker run image-name = docker create image-name + docker start image-name
@@ -66,8 +69,9 @@ docker run image-name = docker create image-name + docker start image-name
   
 
   we can restart any stop container
-	docker ps --all
-	docker start -a <id>
+	 
+	 docker ps --all
+	 docker start -a <id>
 
 
 
