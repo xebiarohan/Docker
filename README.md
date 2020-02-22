@@ -126,5 +126,29 @@ eg
 By default it will pick the latest image tag. give tag number if required.
 
 
+Copying files from system to temporary container created in docker file :
+
+	COPY {source} {destination in container}
+	
+eg
+	
+	COPY ./ ./
+	
+
+Docker run with port mapping  :
+	
+	docker run -p {systemport number} : {container port number} {imageId}
+	
+eg
+	
+	docker run -p 8080:8080 rohan230/simpleweb
+	
+Setting relative folder in a container. So all the commands like COPY, RUN etc will be executede in this folder
+
+	
+	WORKDIR /usr/app
+
+
+
 
 	
