@@ -59,23 +59,24 @@ docker commands :
 	-i is used so that the process can understand command which we enters in terminal throughh STDIN
  
 
-docker run image-name = docker create image-name + docker start image-name
+12 Docker run image-name = docker create image-name + docker start image-name
 
- Container life cycle
-  1. Create container
-  2. Start container
-  3. Stop container 
-  4. Delete container (prune)
+13 Container life cycle
+	
+	Create container
+	Start container
+	Stop container 
+	Delete container (prune)
   
 
-  we can restart any stop container
+14 we can restart any stop container
 	 
 	 docker ps --all
 	 docker start -a <id>
 
 
 
-Creating custom docker image
+15 Creating custom docker image
 
 	dockerFile -> docker CLI -> docker server -> docker image
 	
@@ -91,11 +92,11 @@ Example of Docker Image
 	
 	CMD ["redis-server"]
 
-Building a docker file
+16 Building a docker file
 	
 	docker build .
 
-Running that docker file
+17 Running that docker file
 	
 	docker run {image-id}
 	
@@ -103,7 +104,7 @@ Every step in docker file creates a temporary container on which the next steps 
 temporary container gets removed ending up giving an image of final container with primary command.
 
 
-Tagging an image :
+18 Tagging an image :
 	Tagging is important so that we dont have to remember the id of the image
 	
 	
@@ -115,7 +116,7 @@ eg
 	
 . refers to build context
 
-Running a tagged image
+19 Running a tagged image
 
 	docker run {dockerId}/name
 
@@ -126,7 +127,7 @@ eg
 By default it will pick the latest image tag. give tag number if required.
 
 
-Copying files from system to temporary container created in docker file :
+20 Copying files from system to temporary container created in docker file :
 
 	COPY {source} {destination in container}
 	
@@ -135,7 +136,7 @@ eg
 	COPY ./ ./
 	
 
-Docker run with port mapping  :
+21 Docker run with port mapping  :
 	
 	docker run -p {systemport number} : {container port number} {imageId}
 	
@@ -143,7 +144,8 @@ eg
 	
 	docker run -p 8080:8080 rohan230/simpleweb
 	
-Setting relative folder in a container. So all the commands like COPY, RUN etc will be executede in this folder
+	
+22 Setting relative folder in a container. So all the commands like COPY, RUN etc will be executede in this folder
 
 	
 	WORKDIR /usr/app
