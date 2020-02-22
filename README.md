@@ -78,6 +78,52 @@ docker run image-name = docker create image-name + docker start image-name
 Creating custom docker image
 
 	dockerFile -> docker CLI -> docker server -> docker image
+	
+we creates a docker file and put it to docker server through docker client. It changes the docker file to an docker image.
+Docker file can be broke down into 3 parts : Base image, command to add more program to it and command which will get executed when image runs.
+
+Example of Docker Image
+	
+	FROM alpine
+	
+	RUN apk add --update redis
+	RUN apk add --update gcc
+	
+	CMD ["redis-server"]
+
+Building a docker file
+	
+	docker build .
+
+Running that docker file
+	
+	docker run {image-id}
+	
+Every step in docker file creates a temporary container on which the next steps runs and after execution of next steps this
+temporary container gets removed ending up giving an image of final container with primary command.
+
+
+Tagging an image :
+	Tagging is important so that we dont have to remember the id of the image
+	
+	
+	docker build -t {dockerId}/{name}:{version} .
+	
+eg
+	
+	docker build -t rohan230/redis:latest .
+	
+. refers to build context
+
+Running a tagged image
+
+	docker run {dockerId}/name
+
+eg
+	
+	docker run rohan230/redis
+	
+By default it will pick the latest image tag. give tag number if required.
 
 
 
