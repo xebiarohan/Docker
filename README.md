@@ -151,6 +151,65 @@ eg
 	WORKDIR /usr/app
 
 
+23 Docker compose
 
+	It is a seperate CLI that gets installed along with docker.Its simmilar to the docker CLI just it added some extra
+	features. It is used to start up multiple docker container at the same
+	time. It also automates arguments which we pass with docker run command like -t for tag.
+	
+ for docker compose we need to create a docker-compose.yml file
+ 
+ sample docker-compose.yml file :
+ 	
+	   version: '3'
+	   services: 
+		redis-server:
+		     image: 'redis'
+		node-app:
+		     build: .
+		     ports: 
+			- "4001:8081"                       //   4001 is system port and 8081 is containers port
+	
+All the containers created through a common docker-compose file can freely communicate with eachother.
+
+24 Running containers which are configured in docker-compose file :
+
+	docker-compose up
+	
+	
+25 Merging building and running process in docker-compose :
 
 	
+	docker-compose up --build
+
+26 Running containers in background
+
+	docker--compose up -d
+	
+27 closing all the running containers :
+
+	docker-compose down
+	
+28 In case one of out container wewnt down due to some reasons. we can restart the process or container
+	we have 4 restart policies :
+		
+		"no"   // if container went down , dont try to restart it
+		always  // if container went down , always attempt to restart it
+		on-failure  // attempt restart only if it stops with an error message
+		unless-stopped  // always attempt to restart unless we forcefully stop it
+		
+example how to use it
+
+		version: '3'
+		services: 
+    		   redis-server:
+        		image: 'redis'
+    		   node-app:
+        		restart: always
+        		build: .
+        		ports: 
+            		   - "4001:8081"
+
+29 To check all the containers running through docker-compose :
+	
+	docker-compose ps
