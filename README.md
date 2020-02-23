@@ -184,7 +184,7 @@ All the containers created through a common docker-compose file can freely commu
 
 26 Running containers in background
 
-	docker--compose up -d
+	docker-compose up -d
 	
 27 closing all the running containers :
 
