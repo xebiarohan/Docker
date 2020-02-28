@@ -213,3 +213,13 @@ example how to use it
 29 To check all the containers running through docker-compose :
 	
 	docker-compose ps
+	
+30 Attaching termianal to any container stdin
+
+	docker attach {docker-id}
+	
+31 nginx : used as a production server (help in communication between web browser and image files)
+
+31 We can have more than 1 base images in docker file. (eg 1 for build process and 1 for run).
+
+
