@@ -220,6 +220,9 @@ example how to use it
 	
 31 nginx : used as a production server (help in communication between web browser and image files)
 
-31 We can have more than 1 base images in docker file. (eg 1 for build process and 1 for run).
+32 We can have more than 1 base images in docker file. (eg 1 for build process and 1 for run).
+
+33 To build a different dockerfile in same project like for dev environment and for test environment
+	docker build -f {dockerfileName} .
 
 
