@@ -225,4 +225,6 @@ example how to use it
 33 To build a different dockerfile in same project like for dev environment and for test environment
 	docker build -f {dockerfileName} .
 
+34 Travis-CI is a continuous integration tool.
+
 

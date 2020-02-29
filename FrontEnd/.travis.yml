@@ -1,0 +1,9 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t rohan230/frontEnd -f Dockerfile.dev .
+
+script:
+    - docker run rohan230/frontEnd npm run test -- --coverage
