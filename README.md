@@ -3,8 +3,8 @@ Docker commands and important points
 
 
 Image 
- - FS snapshot (File system)
- - Startup Command
+ - FS snapshot (File system) - contains the process, which it adds to a container
+ - Startup Command - command to execute at container startup
 
 
 docker commands :
@@ -14,10 +14,11 @@ docker commands :
 
  2. Listing all the current containers : 
  
-		docker ps
+		docker ps 
+		
  3. Listing all the containers which ever run on the system : 
  
-		docker ps --all
+		docker ps --all / docker container ls
  4. Creating a Container : (will give 1 unique id) : 
 		
 		docker create <image-name>
@@ -59,7 +60,7 @@ docker commands :
 	-i is used so that the process can understand command which we enters in terminal throughh STDIN
  
 
-12 Docker run image-name = docker create image-name + docker start image-name
+12 Docker run image-name = docker create <image-name> + docker start -a <image-id>
 
 13 Container life cycle
 	
@@ -73,7 +74,8 @@ docker commands :
 	 
 	 docker ps --all
 	 docker start -a <id>
-
+	 
+-a is used to print out the logs on the terminal.	 
 
 
 15 Creating custom docker image
