@@ -42,13 +42,26 @@ docker commands :
 		In case of stop command if it doesnot stop in 10 sec , it will automatically calls the docker 
 		kill command.
 	
- 9. Execute an additional command in a container : 
+ 9. Execute an additional command in a container. For example if we starts redis database in a docker container, so the program running in docker container is
+ redis-server. but we also want to run redis-cli, in that case we can use this command :
  
 		docker exec -it {container-id} {command}
 		
- 10. Getting shell or terminal access in container : 
+		docker exec -it {container-id} redis-cli
+ We can start a shell window in any docker container using the exec command like :
+ 		
+		docker exec -it {container-id} sh
+		
+ 10. Every process in docker container contains 3 different communication channels
+	:STDIN  - to send inforation to the process.
+	:STDOUT - to get inforamtion from the process.
+	:STDERR - to get the error message from the process.
+
+
+These channels are used to pass information into the process or to get the information from the process.
+-it is equal to the -i -t and -i is used to connect the communication channels to the console. and -t is used to format the text which we are passing to the process and which we are getting back.
  
-	docker exec -it {container-id} sh
+	docker exec -i -t {container-id} sh
 	
  11. Creating and running a container from an image : 
  	
@@ -93,6 +106,9 @@ Example of Docker Image
 	RUN apk add --update gcc
 	
 	CMD ["redis-server"]
+	
+Creating a docker image is equal to the installing a new software in a computer without any Operating system on it. So base image resolves the issue of 
+operating system and some other programs which helps to install the desired software.
 
 16 Building a docker file
 	
