@@ -115,6 +115,29 @@ docker rm {container-id}
 ```
 Deletes a stopped container, We cannot remove a running container, first we have to stop/kill the container then only we can delete or remove that container.
 
+#### Removing containers
+
+```docker
+docker container prune
+```
+
+You will get the prompt 'Are you sure...', If you dont want to override this prompt then you can use force flag (--force or -f)
+
+#### Removing containers using filters
+
+- Removes containers which are older than 12 hours
+
+```docker
+docker container prune --filter "until=12h"
+```
+
+- Removing container with exited status
+
+```docker
+docker container prune --filter status=exited
+```
+Similarly we can use other filters as well.
+
 
 
 ## Important image commands :
@@ -184,51 +207,7 @@ So in this case we can remove the dependent image first and then remove the curr
 docker image rm {image-id/ image-name} --force
 ```
 
-## Miscellaneous commands 
-
-#### Checking version
-```docker
-docker version
-```
-Gives the complete description of the docker version.
-
-#### Deleting all the unused containers and images
-
-```docker
-docker system prune
-```
-It first prompt that 'Are you really want to continue' and if you press Y then it will remove all the unused containers, images and networks
-
-By default this command does not removes volumes. So to remove the volumes we have to pass extra option.
-
-```docker
-docker system prune --volumes
-```
-
-#### Removing containers
-
-```docker
-docker container prune
-```
-
-You will get the prompt 'Are you sure...', If you dont want to override this prompt then you can use force flag (--force or -f)
-
-#### Removing containers using filters
-
-- Removes containers which are older than 12 hours
-
-```docker
-docker container prune --filter "until=12h"
-```
-
-- Removing container with exited status
-
-```docker
-docker container prune --filter status=exited
-```
-Similarly we can use other filters as well.
-
-#### Removing dangling images
+#### Removing all dangling images
 
 ```
 docker image prune
@@ -251,10 +230,73 @@ docker image prune -a --filter "until=12h"
 
 Removes/deletes all the dangling and unused images older than 12 hours.
 
+## Miscellaneous commands 
+
+#### Checking version
+```docker
+docker version
+```
+Gives the complete description of the docker version.
+
+#### Deleting all the unused containers and images
+
+```docker
+docker system prune
+```
+It first prompt that 'Are you really want to continue' and if you press Y then it will remove all the unused containers, images and networks
+
+By default this command does not removes volumes. So to remove the volumes we have to pass extra option.
+
+```docker
+docker system prune --volumes
+```
 
 #### Removing all unused volumes
 
 ```docker
 docker volume prune
 ```
+
+
+## Advance commands with options
+
+#### Running container in background
+
+```docker
+docker run -d {image-id/ image-name}
+```
+
+Here -d is used for detach, it will run this container in the background. It allows you to use the terminal for other commands.
+
+
+#### Adding port
+
+```docker
+docker run -p 4000:8080 {image-id/image-name}
+```
+Here -p is the short form for port and 4000:8080 means any request coming on port 4000 on the specified host will be redirected to 8080 port of the container.
+
+
+#### Connecting to STDIN and STDOUT
+```docker
+docker run -i -t -p 4000:8080 {image-id/image-name}
+```
+
+-i is short for interactive and is used for opening connection to docker client (STDIN)
+-t is short for --tty, it allocates a pseudo terminal that connects your terminal with docker client for interaction. (STDIN and STDOUT)
+
+we can combine these two command 
+
+```docker
+docker run -it -p 4000:8080 {image-id/image-name}
+```
+
+#### Auto deleting container
+
+```docker
+docker run -it -p 4000:8080 -rm {image-id/image-name}
+```
+
+Here the -rm is short for remove and it is used for automatically deleting the container when it stops.
+
 
