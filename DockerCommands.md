@@ -32,7 +32,6 @@ The third part is the reference to the image or container with there propertues 
 
 ## Important Container commands : 
 
-### Syntax : docker {task} {image-id/ image-name/container-id}
 
 #### Creating a container :
 
@@ -153,4 +152,109 @@ docker image ls
 
 Lists all the images present in your system that includes both pulled images from docker hub repository and local created images from docker files.
 
+#### Checking image history
+
+```docker
+docker image history {image-name/image-id}
+```
+
+Given all the delails like when it was created, what is the size of the image, how many times same image was created etc
+
+#### Inspecting image
+
+```docker
+docker image inspect {image-id/image-name}
+```
+
+Returns all the information about the image, information like volume, created date, docker version, working directory, docker file details which is used to create this image etc.
+
+#### Deleting or removing an image
+
+```docker
+docker image rm {image-id/ image-name}
+```
+
+Deletes/ removes an image from the image list . So, if we are done using any image we can remove the unnecessary images using this command. Sometime we get messages like 
+
+Error response from daemon: conflict: unable to delete bf756fb1ae65 (must be forced) - image is being used by stopped container 85da219662dc
+
+So in this case we can remove the dependent image first and then remove the current image (preffered option) or we can force delete this image using
+
+```
+docker image rm {image-id/ image-name} --force
+```
+
+## Miscellaneous commands 
+
+#### Checking version
+```docker
+docker version
+```
+Gives the complete description of the docker version.
+
+#### Deleting all the unused containers and images
+
+```docker
+docker system prune
+```
+It first prompt that 'Are you really want to continue' and if you press Y then it will remove all the unused containers, images and networks
+
+By default this command does not removes volumes. So to remove the volumes we have to pass extra option.
+
+```docker
+docker system prune --volumes
+```
+
+#### Removing containers
+
+```docker
+docker container prune
+```
+
+You will get the prompt 'Are you sure...', If you dont want to override this prompt then you can use force flag (--force or -f)
+
+#### Removing containers using filters
+
+- Removes containers which are older than 12 hours
+
+```docker
+docker container prune --filter "until=12h"
+```
+
+- Removing container with exited status
+
+```docker
+docker container prune --filter status=exited
+```
+Similarly we can use other filters as well.
+
+#### Removing dangling images
+
+```
+docker image prune
+```
+
+Removes all the dangling images from system.
+
+To remove all the unused images with the dandling ones, use the same command with -a option
+
+```docker
+docker image prune -a
+```
+
+#### Removing images using filters
+It is same as removing containers using filters, we can use filter with --filter option
+
+```docker
+docker image prune -a --filter "until=12h"
+```
+
+Removes/deletes all the dangling and unused images older than 12 hours.
+
+
+#### Removing all unused volumes
+
+```docker
+docker volume prune
+```
 
