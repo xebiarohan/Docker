@@ -299,4 +299,27 @@ docker run -it -p 4000:8080 -rm {image-id/image-name}
 
 Here the -rm is short for remove and it is used for automatically deleting the container when it stops.
 
+#### Executing an other command on running container
+
+```docker
+docker exec -it {container-id} {command}
+```
+
+This is used when we have to execute multiple command like in redis, we have to start the redis server and redis-cli to interact with the redis server So
+we can use exec command like
+
+```docker
+docker run redis
+
+docker exec -it {container-id} redis-cli
+```
+Here the container id is the id of the redis container which get created from 1st command.
+
+#### Opening terminal in any container
+
+If we want to see which all programmes or data is present in any container then we can open an shell terminal inside container using the exec command
+
+```docker
+docker exec -it {container-id} sh
+```
 
