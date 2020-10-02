@@ -32,7 +32,7 @@ src, node_modules.
 
 ## What to add in a Dockerfile
 
-#### Step 1 : Adding base image
+#### Step 1: Adding base image
 
 So lets imagine, if someone gives you a system and askes you to run a react application in that system. what is the first thing you need in that system.
 
@@ -47,7 +47,7 @@ So the first line to add in Dockerfile :
 FROM node:alpine
 ```
 
-#### Step 2 : Adding working directory 
+#### Step 2: Adding working directory 
 
 So now we verified that that we have a system with operating system and node installed in it. Now we have to copy our code in the system, for that we have to create
 a new folder or select a exixting one.
@@ -60,7 +60,7 @@ WORKDIR /usr/app
 
 If the folder does not exist then this command will create the folder, we can choose any folder we want.
 
-#### Copying application
+#### Step 3: Copying application
 
 After selection of the folder now we need to copy the application in the system.
 Similarly we need to copy data in our docker image, for that we will add this command in our docker file 
@@ -70,7 +70,7 @@ COPY ./ ./
 ```
 It means copy all the folder in current directory where the docker file is present to the folder which we specified before (/usr/app).
 
-####   Running application specific commands
+#### Step 4: Running application specific commands
 
 Now you coping the react application in the system, to run the application first we need to resolve the dependencies.
 Similarly to resolve the dependencies in our react application present in docker image, we need to add execute :
@@ -81,7 +81,7 @@ RUN npm install
 
 We can have multiple RUN commands, here as per our requirement, we added only 1.
 
-#### Adding default comamnd
+#### Step 5: Adding default comamnd
 
 Now all we need to run the application in system is to execute the final run command.
 
@@ -101,5 +101,28 @@ So the final dockerfile will look something like :
 
 
 
+## Building Dockerfile
+
+As our dockerfile is ready, now we will build it to get our docker image. Open your terminal in the same folder where the Dockerfile is present and execute
+
+```js
+docker build .
+```
+Here dot represents the building context. 
+
+-p is for the port mapping, it means any call coming to the local host on port 3000 will be redirected to the containers 3000 port.
+
+When you will run this command, you will see Step 3 is taking comparitely more time then the others. we will try to fix this later in the blog.
+
+So once it is done, you will get a image id, somthing like (1d88cc74aac8).
 
 
+## Running docker image
+
+Now we can run our docker image using docker image id :
+
+```js
+docker run -p 3000:3000 {image-id}
+```
+
+It will starts the server.
