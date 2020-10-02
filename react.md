@@ -68,7 +68,8 @@ Similarly we need to copy data in our docker image, for that we will add this co
 ```js
 COPY ./ ./
 ```
-It means copy all the folder in current directory where the docker file is present to the folder which we specified before (/usr/app).
+It means copy all the folder in current directory where the docker file is present to the folder which we specified before (/usr/app). Make sure to delete node_module from the project which we are copying because we dont want to copy large noed_module package, we will create it again in container using
+npm install command.
 
 #### Step 4: Running application specific commands
 
@@ -81,7 +82,7 @@ RUN npm install
 
 We can have multiple RUN commands, here as per our requirement, we added only 1.
 
-#### Step 5: Adding default comamnd
+#### Step 5: Adding startup comamnd
 
 Now all we need to run the application in system is to execute the final run command.
 
@@ -110,9 +111,8 @@ docker build .
 ```
 Here dot represents the building context. 
 
--p is for the port mapping, it means any call coming to the local host on port 3000 will be redirected to the containers 3000 port.
 
-When you will run this command, you will see Step 3 is taking comparitely more time then the others. we will try to fix this later in the blog.
+When you will run this command, you will see Step 4 is taking comparitely more time then the others. we will try to fix this later in the blog.
 
 So once it is done, you will get a image id, somthing like (1d88cc74aac8).
 
@@ -122,7 +122,67 @@ So once it is done, you will get a image id, somthing like (1d88cc74aac8).
 Now we can run our docker image using docker image id :
 
 ```js
-docker run -p 3000:3000 {image-id}
+docker run -it -p 3000:3000 {image-id}
 ```
 
 It will starts the server.
+
+-p is for the port mapping, it means any call coming to the local host on port 3000 will be redirected to the containers 3000 port.
+
+-i is short for interactive and is used for opening connection to docker client (STDIN) -t is short for --tty, it allocates a pseudo terminal that connects your terminal with docker client for interaction. (STDIN and STDOUT).
+
+
+<Image 2>
+
+
+
+
+## Temporary containers
+
+We saw when we first created our build file, it took some time to build the image but if we build the same image again it will take far less time then before
+
+why ?
+
+because Docker files uses temporary contianers while executing the docker file and stores these containers in the local cache. So when we build the same docker file again then it checks is there is any container present in local cache similar to the requirement. if yes, then directly returns that. we can see in the
+logs as well.
+
+<DOcker image 3>
+
+
+In this image we can see the temporary docker container ids.
+
+If we change something like a file in our application then that step will not use a cache container, it will create a new temporary container for that step
+and for all the steps following that one.
+
+I changed app.js file.
+
+<Docker image 4>
+
+
+Here we can see from step 3, docker created new temporary conainers, its good that docker can detect the changes but we have not made any change to our package.json so, there is no need to rerun the step 4 (updating dependencies).
+
+NOTE : Docker will create new containers even if we change the scequence of steps in docker file.
+
+## Refactoring docker file
+
+As we saw we are running all the steps following the step where changes are made, as we cannot change the docker functionality but we can modidy our docker file
+to overcome this problem.
+
+
+<DOcker image 5>
+
+
+
+Here we made one change, first we are copying the package.json file then running 'npm install' to resolve the dependencies and then we are copying the
+remaining project.
+
+So now if even if we make any change to the application file (other than package.json), npm install step is not going to run while deployment.
+
+So lets check by making 1 change
+
+
+<Docker-6>
+    
+
+Here we can see after making change to applications, only step 5 and following steps created new containers.
+
