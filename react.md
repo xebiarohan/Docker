@@ -186,3 +186,54 @@ So lets check by making 1 change
 
 Here we can see after making change to applications, only step 5 and following steps created new containers.
 
+
+## Dockerizing react project for production.
+
+To run a application in production first we need to make production version of the application using npm run build, it processes all the java script files, puts togather, process them in a single file.
+
+In development container we have a development server, So whenever we make a request to port 3000, it redirects the request to this development server and this server interacts with our applicaiton present in the container and returns the response to the browser.
+
+But this development server does not exist in our production environment as we are not making any more changes to the code, we just compress our code and made a 
+build out of it. 
+
+So we need some server which can help in interaction between this build and browser. So we will use Nginx.
+
+### Nginx
+Nginx is a very popular web server, there is nnot much logic associated with it. it is just use for routing the traffic in and out of the application.
+
+## Builing production dockerfile
+So lets again understand this with an example, what you will do to deploy a application in production in a system. 
+
+I guess, first you will create a production build file using (npm run build) then you will pass this file to a production server and starts it. Simple right ?
+
+Same we are going to do in our docker file, first we will write steps to first do a build and then pass this build to a production server (nginx) and starts the
+server.
+
+So our docker file have to do 2 tasks, the first one is to create a build and the second one is copy the build in nginx.
+
+
+<Docker-image 7>
+
+
+Here we divided our docker file in 2 parts for the mentioned 2 tasks.
+
+So we can use the same command to build the docker file
+
+```js
+docker build .
+```
+It will give the image id which we will use in next step.
+
+## Running production build
+
+Now we need to map the localhost port with the default port of nginx which is 80.
+
+```js
+docker run -it -p 8080:80 {image-id}
+```
+
+
+<Docker-8>
+
+
+
