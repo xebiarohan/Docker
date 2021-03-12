@@ -60,10 +60,8 @@ As docker-compose is totally based upon the YAML file So, it makes it vert impor
 
 We can create docker-compose file in the top level of the project, it is not mandatory but it makes it easy to access the Dockerfiles present in the project. We must follow the standard of the file name, it must have 'docker-compose' as name and 'yaml' or 'yml' as extension.
 
+![docker-compose-1](https://user-images.githubusercontent.com/13641422/110967804-3729e380-8370-11eb-9519-f1df24f4dac9.png)
 
-```js
-First Image
-```
 
 ### Docker-compose keys description
 
@@ -440,6 +438,12 @@ volumes:
   data:
 ```
 
+So our final docker-file will look something like: 
+
+![docker-compose-2](https://user-images.githubusercontent.com/13641422/110968080-8a039b00-8370-11eb-9a9d-abe443a204ce.png)
+
+
+
 ### Starting services using docker-compose
 
 First in console, we have to navigate to the folder where the docker-compose file is present. Then there is only 1 basic command
@@ -491,3 +495,5 @@ docker-compose down -v
 ```
 
 
+So thats all for this article, for more information about the docker-compose please refer to the official documentation:
+https://docs.docker.com/compose/compose-file/
