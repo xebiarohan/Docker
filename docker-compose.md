@@ -97,7 +97,8 @@ services:
     ------------------
 ```
 
-Here, mongodb,node-app and react-app are the names of the containers that we want to run and dotted lines are showing the details of the container that we will discuss next.
+Here, mongodb,node-app and react-app are the names of the services, dotted lines are showing the details of the services that we will discuss next. Every service
+defines a single container. Name of the service is not equal to the name of the container.
 
 
 #### 3. image:
@@ -374,6 +375,71 @@ volumes:
 ```
 A single service can depend upon multiple services. So we can define multiple services names in the depends_on list.
 
+#### 11. container_name
+As we disucssed in the second point that the name of the service is not equal to the name of the container. So, if we want to specify the name of the container then we can use container_name key
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+    container-name: mongodb
+  node-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    ports:
+      - '80:80'
+    depends_on: 
+      - mongodb
+    container-name: backend
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+
+#### 12. stdin_open: and tty:
+It is used to add the interactive mode in the container. It is equal to the -it flag that we use in the docker run command.
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+    container-name: mongodb
+  node-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    ports:
+      - '80:80'
+    depends_on: 
+      - mongodb
+    container-name: backend
+  react-app:
+    stdin_open: true
+    tty: true
+    ------------------
+    
+volumes:
+  data:
+```
+
 ### Starting services using docker-compose
 
 First in console, we have to navigate to the folder where the docker-compose file is present. Then there is only 1 basic command
@@ -386,12 +452,28 @@ This command will first check if all the images mentioned in the docker-compose 
 
 We can add some extra parameters in the given docker-compose up command
 
-#### detach mode (-d)
+#### Detach mode (-d)
 If we want to run our containers in detach mode then we can add '-d' in the docker-compose command.
 
 ```js
 docker-compose up -d
 ```
+
+#### Forcing image rebuild (--build)
+If we want to rebuild the image every time we run the docker-compose file then we can use --build with the docker-compose up command
+
+```js
+docker-compose up --build
+```
+It will only rebuild the image from the Dockerfile present in the docker-compose file, docker-compose cannot rebuild the image passed with the image key.
+like in our example we can rebuild the node-app image but cannot build the mongodb image.
+
+If we just want to build all the images present in the docker-compose file and not want to run the containers then we can use
+
+```js
+docker-compose build
+```
+
 
 ### Stopping services using docker-compose
 We can stop all services and remove all the containers from local cache using.
