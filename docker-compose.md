@@ -126,7 +126,7 @@ image: 'custom-repository/mongo'
 ```
 
 #### 4. volumes:
-It is used to define all the volumes to be used in the container. We can specify all the volumes as a list under the volumes key.
+It is used to define all the volumes to be used in a container. We can specify all the volumes as a list under the volumes key. We can add named volume, anonymous volume as well as bind-mounts under volumes key.
 
 ```js
 version: "3.8"
@@ -255,6 +255,124 @@ volumes:
 
 ```
 
+#### 8. build:
+If we are building a docker image then there are two ways to use that in our docker-compose file. one, if we create the docker image using 'docker build' command and then use the name of the command in the image key of docker file as we saw in third point. The other approach is to define all the details required to build the image in the docker-compose file itself.
+
+We can pass these details using the build key. In the most simple way we can just pass the path of Dockerfile to create the image in the build key
+
+```js
+build: ./backend
+```
+Dockerfile is present in the backend folder (See the folder structure in figure 1).
+
+If the Dockerfile is present in the same directory where the docker-compose file is present then we can use dot (.)
+
+```js
+build: .
+```
+
+But sometimes we have more than 1 dockerfile for the same container based on the profile (dev,test, prod, etc). So in that case we have to provide the relative path as well as name of the Dockerfile.
+
+```js
+build: 
+  context: ./backend
+  dockerfile: Dockerfile-dev
+```
+
+context represents the directory that contains the Dockerfile and dockerfile key specifies the name of the file.
+
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+  node-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+
+#### 9. ports:
+It is used to expose the ports, It maps the port number of the host machine to the port numbers of the container. so when user want to interact with the container they can do so using the port numbers of host machine
+
+```js
+ports:
+  - '3000:80'
+  - '8080:8080'
+```
+
+Here 3000 is the port number of the host machine and 80 is the port number of the container. So when we hit the 3000 port on the local machine it will redirect the request to the container on port 80. We can use the same port numbers as well, I used different to show the difference properly. We can define multiple port mappings.
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+  node-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    ports:
+      - '80:80'
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+
+#### 10. depends_on:
+By default docker-compose tries to run all the services simuntaneously. If we have some dependency between the modules then we have to specifically mention the dependency like backend depend upon the mongodb, we need to run mongodb first then only backend can run. So we add depend on key in the backend service so that docker-compose will first start the mongodb first and then only try to start backend service.
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+  node-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-dev
+    ports:
+      - '80:80'
+    depends_on: 
+      - mongodb
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+A single service can depend upon multiple services. So we can define multiple services names in the depends_on list.
 
 ### Starting services using docker-compose
 
