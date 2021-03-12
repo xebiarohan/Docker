@@ -16,6 +16,7 @@ Docker-compose solves this issue. we can define the details of all the container
 
 ### Prerequisites
 
+#### 1. Docker instllation
 The primiary prerequisite is to have docker installed in your system. Execute the following command to check the docker version
 
 ```js
@@ -30,8 +31,8 @@ If you get the proper version means docker is already installed in your system o
 
 https://docs.docker.com/engine/install/
 
-
-Second prerequisite is to have docker-compose installed. To check that if it is already installed, run the following command
+#### 2. Docker-commpose installation
+We need to have docker-compose installed in our system. To check that if it is already installed, run the following command
 
 ```js
 docker-compose -v
@@ -45,6 +46,15 @@ If it is not already installed then follow the below link to install it in your 
 
 https://docs.docker.com/compose/install/
 
+#### 3. Basic docker knowledge
+We dont need to be a docker expert to understand this article but you should have basic understanding of docker terminology like container, image, volume, Dockerfile etc.
+
+#### 4. Basic YAML knowledge
+As docker-compose is totally based upon the YAML file So, it makes it vert important to know how to read and write a basic YAML file.
+
+
+## Suggestion : I would like to suggest you to use VS code and install Docker extension in it. It will add intellisense to the project and it will help you with proper suggestions of the docker-compose keys
+
 
 ### Creating docker-compose file
 
@@ -53,7 +63,6 @@ We can create docker-compose file in the top level of the project, it is not man
 
 ```js
 First Image
-
 ```
 
 ### Docker-compose keys description
@@ -64,7 +73,7 @@ Now we will see the details of all the docker-compose keys that can be used to s
 Every docker-compose file starts with the version property. It specifies the version of docker-compose specifications we want to use. It affects the features we can use in our docker-compose file.
 
 ```js
-version: '3.8'
+version: "3.8"
 ```
 
 To know more about versioning please refer to : https://docs.docker.com/compose/compose-file/
@@ -73,6 +82,7 @@ To know more about versioning please refer to : https://docs.docker.com/compose/
 It is the main key under that we defines the details of all the containers that we want to run.
 
 ```js
+version: "3.8"
 services:
   mongodb:
     ------------------
@@ -88,3 +98,159 @@ services:
 ```
 
 Here, mongodb,node-app and react-app are the names of the containers that we want to run and dotted lines are showing the details of the container that we will discuss next.
+
+
+#### 3. image:
+It defines the image of the container that we want to run, it can be a local image that we created from a Dockerfile or it can be a existing image present in any repository. 
+
+```java
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    ------------------
+    ------------------
+  node-app:
+    ------------------
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+```
+
+If the image does not exist locally and we dis not specify the repository then it will by default checks the central docker repository. We can specify the custom repository like 
+
+```js
+image: 'custom-repository/mongo'
+```
+
+#### 4. volumes:
+It is used to define all the volumes to be used in the container. We can specify all the volumes as a list under the volumes key.
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    ------------------
+  node-app:
+    ------------------
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+
+```
+
+Here 'data' is the named volume that is pointing to the 'data/db' folder of the container. It will persist all the data of 'data/db' folder on the local machine.
+
+In the end of the docker-compose file we have to specify all the named volumes we are using in all the containers. Currently we are using only 1 named volume so, we specified it.
+
+#### 5. environment:
+It is used to specify the environment variables to be used in the application running inside that specific container. There are two ways of specifying the environment variables
+
+```js
+environment:
+  MONGO_USERNAME: root
+  
+OR
+
+environment:
+  - MONGO_USERNAME=root
+```
+
+Both will work, but I suggest to use the first approach as it satisties the yaml contract conditions
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    environment:
+      MONGO_USERNAME: root
+      MONGO_PASSWORD: root
+  node-app:
+    ------------------
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+
+#### 6. env_file:
+In the last point we specified all the environment variables inside the docker-compose file, this approach is ok when we have few environment variables but if we have many variables then we can move those variables inside a environemnt variable file and can refer the path (relative path to the docker-compose file) of the file in the docker compose file.
+
+First we will create a folder parallel to the docker-compose file (as shown in figure-1) then we will create a mongo.env file inside it  (name is upto you but the exxtension should be .env). We can create this file anywhere we want, but its a good practice to create it parallel to the docker-compose file to improve the readibility of the application and configuration.
+
+we can take our environment variables and can place it in the mongo.env file as shown
+
+```js
+MONGO_USERNAME=root
+MONGO_PASSWORD=root
+```
+
+Refer the address (relative to the docker-compose file) of the environmental file in the docker-compose file.
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+  node-app:
+    ------------------
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+```
+
+#### 7. networks:
+The main purpose of the network is to run all the related containers in the same network, so that they can communicate without any hindrance. docker-compose file gives this functionality by default. It means all the containers running using a single docker-compose file can communicate with each other without specifying any other network details. 
+
+But if you still wants to run your container in a particular network let say to make it compatible with the containers running using other docker-compose file then you can specify the network settings in the docker-compose file.
+
+
+```js
+version: "3.8"
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:data/db
+    env-file:
+      - ./env/mongo.env
+    networks:
+      - ecommerce-network
+  node-app:
+    ------------------
+    ------------------
+    ------------------
+  react-app:
+    ------------------
+    ------------------
+    
+volumes:
+  data:
+
+```
