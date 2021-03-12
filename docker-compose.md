@@ -53,7 +53,7 @@ We dont need to be a docker expert to understand this article but you should hav
 As docker-compose is totally based upon the YAML file So, it makes it vert important to know how to read and write a basic YAML file.
 
 
-## Suggestion : I would like to suggest you to use VS code and install Docker extension in it. It will add intellisense to the project and it will help you with proper suggestions of the docker-compose keys
+### Suggestion : I would like to suggest you to use VS code and install Docker extension in it. It will add intellisense to the project and it will help you with proper suggestions of the docker-compose keys
 
 
 ### Creating docker-compose file
@@ -254,3 +254,39 @@ volumes:
   data:
 
 ```
+
+
+### Starting services using docker-compose
+
+First in console, we have to navigate to the folder where the docker-compose file is present. Then there is only 1 basic command
+
+```js
+docker-compose up
+```
+
+This command will first check if all the images mentioned in the docker-compose file is present locally or not. If not then it will pull it from the docker repository and then it will automatically run it. By default docker-compose tries to run all the containers at the same time.
+
+We can add some extra parameters in the given docker-compose up command
+
+#### 1. detach mode (-d)
+If we want to run our containers in detach mode then we can add '-d' in the docker-compose command.
+
+```js
+docker-compose up -d
+```
+
+#### Stopping services using docker-compose
+We can stop all services and remove all the containers from local cache using.
+
+```js
+docker-compose down
+```
+It also removes the default network it created during the startup time but it will not remove the volumnes used in the docker-compose file by default. 
+
+we can add -v to remove volumes as well.
+
+```js
+docker-compose down -v
+```
+
+
