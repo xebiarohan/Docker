@@ -386,14 +386,14 @@ This command will first check if all the images mentioned in the docker-compose 
 
 We can add some extra parameters in the given docker-compose up command
 
-#### 1. detach mode (-d)
+#### detach mode (-d)
 If we want to run our containers in detach mode then we can add '-d' in the docker-compose command.
 
 ```js
 docker-compose up -d
 ```
 
-#### Stopping services using docker-compose
+### Stopping services using docker-compose
 We can stop all services and remove all the containers from local cache using.
 
 ```js
@@ -401,7 +401,8 @@ docker-compose down
 ```
 It also removes the default network it created during the startup time but it will not remove the volumnes used in the docker-compose file by default. 
 
-we can add -v to remove volumes as well.
+#### Removing volume while stopping services
+ We can add -v in the docker-compose down command to remove all the volumes defined in the docker-compose file.
 
 ```js
 docker-compose down -v
