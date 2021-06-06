@@ -17,11 +17,12 @@ These arguments can be used in different build steps but not in the CMD, as thes
 specifically used for build phase.
 
 
+
 ### Defining build arguments in Dockerfile
 we can add a argument step in the Dockerfile like
 
 ```js
-  ARG VERSION 0.1
+  ARG VERSION=0.1
 ```
 
 we can use ARG command to set the build argument in the docker file and we can use it using  the ($) sign like
@@ -37,6 +38,7 @@ It is not mandatory to give the default value, we can just declare it as well li
 ARG VERSION
 ```
 
+
 ### Defining build argument in docker build command
 We can override the default value of the ARG in the build command using --build-arg
 
@@ -45,6 +47,8 @@ docker build -t hello-world:latest --build-arg version= 0.2 .
 ```
 
 So it will copy the 0.2 version from the host file to the docker image.
+
+
 
 ### Defining multiple docker arguments
 
@@ -59,6 +63,7 @@ and in docker build command we have to use multiple --build-arg
 ```js
 docker build -t hello-world:latest --build-arg VERSION=0.2 --build-arg PORT=80 .
 ```
+
 
 
 ## Docker environment variables
@@ -79,3 +84,57 @@ In JAVA
 ```js
 System.getenv("PORT")
 ```
+
+### Defining environment variables in Dockerfile
+
+we can directly define the environment variables in the dockerfile like 
+
+```js
+ENV PORT_NUMBER=8080
+```
+
+we cannot override the default value of environment variable define in the Dockerfile at the build phase directly but we can use build arguments to do that. 
+
+```js
+ARG PORT
+
+ENV PORT_NUMBER=$PORT
+```
+
+The value of build argument will determine the default value of the environment variable.
+
+
+### Defining envionment variable in the docker run command
+
+The other way to define the environment variable is to pass it in the docker run command using --env tag or -e tag.
+ ```js
+ docker run --env PORT_NUMBER=8080 <image-name>
+ 
+ OR
+ 
+  docker run -e PORT_NUMBER=8080 <image-name>
+ ```
+ 
+ If the PORT_NUMBER environment variable is already defined in the Dockerfile then it will override it.
+ 
+ 
+ ### Defining multiple environment variables
+ We can define multiple environment variables in the Dockerfile like
+ 
+ ```js
+ ENV PORT_NUMBER=8080
+ ENV HOST_NAME=localhost
+ ENV DB_NAME= MySQL
+ ```
+ 
+ Similarly, we can define multiple environment variable in the docker run command like
+ 
+ ```js
+ docker run -e PORT_NUMBER=8080 -e HOST_NAME=localhost -e DB_NAME= MySQL <image-name>
+ ```
+ 
+ but as we can see, the more the number of environment variable the readability of the command decreases. So, in these type of scenarios we can use environment variable file.
+ 
+ ### Environment variable file
+ 
+ 
