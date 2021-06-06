@@ -60,3 +60,22 @@ and in docker build command we have to use multiple --build-arg
 docker build -t hello-world:latest --build-arg VERSION=0.2 --build-arg PORT=80 .
 ```
 
+
+## Docker environment variables
+
+Docker enviroment variables are used to make docker run command flexible, it gives the user flexibilty to change certain values at the run time. The environment variables can
+be accessed in the application code as well. It provides a way to set application configuration at the time of running the application, configuration like database details,
+port number to expose etc.
+
+Every languages provides support for the environmental variables like 
+In NODE
+
+```js
+process.env.PORT
+```
+
+In JAVA
+
+```js
+System.getenv("PORT")
+```
