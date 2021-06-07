@@ -93,6 +93,12 @@ we can directly define the environment variables in the dockerfile like
 ENV PORT_NUMBER=8080
 ```
 
+We can use the environment variable in the Dockerfile with $ sign, as we used the build arguments
+
+```js
+EXPOSE $PORT_NUMBER
+```
+
 we cannot override the default value of environment variable define in the Dockerfile at the build phase directly but we can use build arguments to do that. 
 
 ```js
@@ -137,4 +143,7 @@ The other way to define the environment variable is to pass it in the docker run
  
  ### Environment variable file
  
+ It is used to separate the Dockerfile and environment variables, it gives us the flexibility to use different environment variables for running different container using the same Dockerfile.
+ 
+We can create 
  
