@@ -145,5 +145,5 @@ The other way to define the environment variable is to pass it in the docker run
  
  It is used to separate the Dockerfile and environment variables, it gives us the flexibility to use different environment variables for running different container using the same Dockerfile.
  
-We can create 
+We can create a file (best practice is to create with .env name) with any name you want at any location (best practice is to create parallel to the Dockerfile)
  
