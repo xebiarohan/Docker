@@ -162,3 +162,14 @@ docker run --env-file ./.env <IMAGE-NAME>
 ```
 
 ## Difference between Build Arguments and Environment variables
+
+Build arguments and the environment variable both provides a level of flexibility but at the different phases. We cannot replace one with other, infact we can use them togather
+to get higher flexibility.
+
+Build arguments works on the BUILD phase, it has no impact on the run phase of docker where as the ENV variable declared in Dockerfile are available at build time and run time
+and environment variable declared in environment file or directly passed to docker run command are avaiable at RUN phase.
+
+Build arguments cannot be used in the application code to be containerised, but we can use environment variable in the application code.
+
+
+#### For more details please refer to the official docker documentation: https://docs.docker.com/
