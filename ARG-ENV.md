@@ -130,7 +130,7 @@ The other way to define the environment variable is to pass it in the docker run
  ```js
  ENV PORT_NUMBER=8080
  ENV HOST_NAME=localhost
- ENV DB_NAME= MySQL
+ ENV DB_NAME=MySQL
  ```
  
  Similarly, we can define multiple environment variable in the docker run command like
@@ -145,5 +145,20 @@ The other way to define the environment variable is to pass it in the docker run
  
  It is used to separate the Dockerfile and environment variables, it gives us the flexibility to use different environment variables for running different container using the same Dockerfile.
  
-We can create a file (best practice is to create with .env name) with any name you want at any location (best practice is to create parallel to the Dockerfile)
- 
+We can create a file (best practice is to create with .env name) with any name you want at any location (best practice is to create at the Dockerfile level). In that file
+we can direcly placce all our environment variable like:
+
+```js
+PORT_NUMBER=8080
+HOST_NAME=localhost
+DB_NAME=MySQL
+
+```
+
+We can use this environment variable file in the docker run command like:
+
+```js
+docker run --env-file ./.env <IMAGE-NAME>
+```
+
+## Difference between Build Arguments and Environment variables
