@@ -161,6 +161,27 @@ We can use this environment variable file in the docker run command like:
 docker run --env-file ./.env <IMAGE-NAME>
 ```
 
+### Sample dockerfile using both Build arguments and Environment variable
+
+```js
+FROM node:alpine
+ARG APP_DIR
+WORKDIR $APP_DIR
+
+COPY package.json .
+RUN npm install
+
+COPY . .
+
+ENV PORT_NUMBER=80
+EXPOSE PORT $PORT_NUMBER
+
+CMD ["npm", "install"]
+
+```
+
+Here we are populating the working directory inside the docker image using the build arguments and exposing the port number using the environment variable (80 is the default port number that shall get exposed in case no value is provided in the 'docker run' command). 
+
 ## Difference between Build Arguments and Environment variables
 
 Build arguments and the environment variable both provides a level of flexibility but at the different phases. We cannot replace one with other, infact we can use them togather
