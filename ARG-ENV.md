@@ -25,11 +25,18 @@ we can add a argument step in the Dockerfile like
   ARG VERSION=0.1
 ```
 
-we can use ARG command to set the build argument in the docker file and we can use it using  the ($) sign like
+we can use ARG command to set the build argument in the docker file and we can use it using the $ or ${} like
 
 ```js
 COPY $VERSION .
 ```
+OR
+
+```js
+COPY ${VERSION} .
+```
+
+
 It will copy the 0.1 version from the host machine to the docker image at the WORKDIR. 
 
 It is not mandatory to give the default value, we can just declare it as well like
@@ -64,7 +71,33 @@ and in docker build command we have to use multiple --build-arg
 docker build -t hello-world:latest --build-arg VERSION=0.2 --build-arg PORT=80 .
 ```
 
+### Using Build Arguments in docker-compose file.
 
+We can declare the build arguments in the Dockerfile and can set the value in the docker-compose file like In the Dockerfile we can add arguments like
+
+```js
+ARG VERSION=0.1
+ARG PORT=8080
+```
+
+and can use it in the docker-compose file like
+
+```js
+build:
+  context: .
+  args:
+    VERSION: 1
+    PORT: 9090
+```
+docker-compose dynamically adds or updates the value of the build arguments declared in the Docker file. We can omit the values in the docker-compose file in that case it will pick the value present in the environment in which the docker-compose is running.
+
+```js
+build:
+  context: .
+  args:
+    VERSION
+    PORT
+```
 
 ## Docker environment variables
 
@@ -93,10 +126,16 @@ we can directly define the environment variables in the dockerfile like
 ENV PORT_NUMBER=8080
 ```
 
-We can use the environment variable in the Dockerfile with $ sign, as we used the build arguments
+We can use the environment variable in the Dockerfile using the  $ or ${} sign, as we used the build arguments
 
 ```js
 EXPOSE $PORT_NUMBER
+```
+
+OR 
+
+```js
+EXPOSE ${PORT_NUMBER}
 ```
 
 we cannot override the default value of environment variable define in the Dockerfile at the build phase directly but we can use build arguments to do that. 
@@ -160,6 +199,85 @@ We can use this environment variable file in the docker run command like:
 ```js
 docker run --env-file ./.env <IMAGE-NAME>
 ```
+
+### Environment variables in docker-compose file
+
+Environment variables can be used in the docker compose file in several ways. The most common way is to add the environment variables int the file (.env), docker-compose file directly reads for it. The file must be present in the same level as the docker-compose file.
+
+.env file
+
+```js
+TAG: 7.3
+```
+
+docker-compose file
+
+```js
+version: '3'
+services:
+  web:
+    image: 'webapp:${TAG}'
+
+```
+
+But, we can have multiple environment like prod, dev, test, etc. In that case we need to build different files. In that scenario we have to use "--env-file" with the "docker-compose up" command to define the location of the environment file like
+
+```js
+docker-compose --env-file ./config/.env.dev up 
+
+docker-compose --env-file ./config/.env.prod up 
+
+docker-compose --env-file ./config/.env.test up 
+```
+Each command is referring to the different environment file.
+
+We can pass the environment variables to containers in docker-compose like we use to do it in the "docker run" command using "-e" and "--env-file" option
+
+```js
+version:3
+services:
+  node:
+    environment:
+      - PORT: 9090
+    
+```
+and
+
+```js
+version:3
+services:
+  node:
+    env_file:
+      - /config/.env.test 
+```
+
+We can have more than 1 environment file for the same service in the Dockerfile.
+
+```js
+version:3
+services:
+  node:
+    env_file:
+      - /config/.env.test1 
+      - /config/.env.test2
+```
+
+
+We can pass the environment variable at the "docker-compose up" using the "-e" optiom
+
+```js
+version:3
+services:
+  node:
+    environment:
+      - PORT
+```
+
+```js
+docker-compose run -e PORT=9090 node
+```
+
+It has a limitation, if two containers have the same environment variable then we cannot run both the containers using the "docker-compose run -e ..." command as it cannot populate the environment variable of both the service.
 
 ### Sample dockerfile using both Build arguments and Environment variable
 
